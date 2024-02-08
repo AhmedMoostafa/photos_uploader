@@ -1,0 +1,17 @@
+CREATE TABLE users (
+  id        VARCHAR NOT NULL PRIMARY KEY,
+  firstName VARCHAR NOT NULL,
+  email     VARCHAR UNIQUE NOT NULL,
+  password  VARCHAR NOT NULL
+);
+
+
+CREATE TABLE photos (
+  id VARCHAR NOT NULL PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  description VARCHAR NOT NULL,
+  path VARCHAR NOT NULL,
+  userId VARCHAR NOT NULL,
+  createdAt INTEGER NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users (id)
+);
