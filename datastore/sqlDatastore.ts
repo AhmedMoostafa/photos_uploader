@@ -21,8 +21,8 @@ export class SqlDatastore implements Datastore {
   getUserById(id: string): Promise<User | undefined> {
     throw new Error('Method not implemented.');
   }
-  getUserByEmail(email: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.');
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return await this.sqlLite?.dbClinet?.get<User>(`SELECT * FROM users WHERE email = ?`, email);
   }
   async listPhotos(): Promise<Photo[]> {
     const photos = await this.sqlLite?.dbClinet?.all<Photo[]>('SELECT * FROM photos');

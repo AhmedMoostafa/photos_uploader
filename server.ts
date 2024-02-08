@@ -8,8 +8,8 @@ const main = async () => {
   const app = express();
   app.use(express.json());
 
-  app.use('/photos', asyncHandler(photosRouter));
-  app.use('/user', asyncHandler(userRouter));
+  app.use('/photos', photosRouter);
+  app.use('/user', userRouter);
 
   const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.log('oops!');

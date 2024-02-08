@@ -18,7 +18,16 @@ export class UserController {
     if (!email || !password) {
       return res.sendStatus(400);
     }
-    return res.sendStatus(200);
+    const user = await this.datastore.getUserByEmail(email);
+    if (user?.password !== password) {
+      return res.sendStatus(403);
+    }
+    res.status(200).send({
+      user: {
+        ...user,
+      },
+      jwt: 'aaaaaaaaaaa',
+    });
   };
   public signUp: ExpressHandler<SignUpRequest, SignUpResponse> = async (req, res) => {
     const { email, firstName, password } = req.body;
