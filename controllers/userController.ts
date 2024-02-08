@@ -7,6 +7,7 @@ import {
   SignUpResponse,
 } from '../types/api';
 import crypto from 'crypto';
+import { signJwt } from '../utils/auth';
 
 export class UserController {
   private datastore: Datastore;
@@ -22,11 +23,13 @@ export class UserController {
     if (user?.password !== password) {
       return res.sendStatus(403);
     }
+    const jwt = signJwt({ userId: user.id });
+
     res.status(200).send({
       user: {
         ...user,
       },
-      jwt: 'aaaaaaaaaaa',
+      jwt,
     });
   };
   public signUp: ExpressHandler<SignUpRequest, SignUpResponse> = async (req, res) => {
@@ -40,7 +43,8 @@ export class UserController {
       firstName,
       password,
     };
+    const jwt = signJwt({ userId: user.id });
     await this.datastore.createUser(user);
-    res.status(200).send({ jwt: 'aaaaaaaaaa' });
+    res.status(200).send({ jwt });
   };
 }

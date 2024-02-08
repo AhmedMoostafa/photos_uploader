@@ -4,17 +4,18 @@ import './datastore/datastore';
 
 import userRouter from './routers/users';
 import photosRouter from './routers/photos';
+import { errorHandler } from './middlewares/errorMiddleware.';
+import dorenv from 'dotenv';
+import { authMiddleware } from './middlewares/authMiddleware';
 const main = async () => {
+  dorenv.config();
   const app = express();
   app.use(express.json());
 
-  app.use('/photos', photosRouter);
   app.use('/user', userRouter);
 
-  const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    console.log('oops!');
-    return res.status(500).send('Internal Server Errro');
-  };
+  app.use('/photos', photosRouter);
+
   app.use(errorHandler);
 
   const PORT = 3000;

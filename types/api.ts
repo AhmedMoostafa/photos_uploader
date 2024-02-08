@@ -6,7 +6,7 @@ export type SignInRequest = {
   password: string;
 };
 export type SignInResponse = {
-  user: Pick<User, 'email' | 'firstName' | 'id'>;
+  user: User;
   jwt: string;
 };
 export type SignUpRequest = Pick<User, 'email' | 'firstName' | 'password'>;
@@ -26,6 +26,10 @@ export type UploadPhotoRequest = {
 };
 
 export type UploadPhotoResponse = {};
+
+export interface jwtObject {
+  userId: string;
+}
 
 // Create generic type and append error prop to the Type T
 type WithError<T> = T & { error: string };

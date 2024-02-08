@@ -18,8 +18,8 @@ export class SqlDatastore implements Datastore {
       user.password
     );
   }
-  getUserById(id: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.');
+  async getUserById(id: string): Promise<User | undefined> {
+    return await this.sqlLite?.dbClinet?.get<User>(`SELECT * FROM users WHERE id = ?`, id);
   }
   async getUserByEmail(email: string): Promise<User | undefined> {
     return await this.sqlLite?.dbClinet?.get<User>(`SELECT * FROM users WHERE email = ?`, email);
