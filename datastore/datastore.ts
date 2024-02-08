@@ -1,6 +1,6 @@
 import { PhotoDao } from './Dao/photoDao';
 import { UserDao } from './Dao/userDao';
-import { SqlDatastore } from './sql/sqlDatastore';
+import { SqlDatastore } from './sqlDatastore';
 
 export interface Datastore extends UserDao, PhotoDao {}
 export let db: Datastore;

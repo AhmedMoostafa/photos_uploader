@@ -1,6 +1,6 @@
-import { Datastore } from '../datastore';
-import { SqlLite } from '../../connections/sqlLite';
-import { User, Photo } from '../../types/types';
+import { Datastore } from './datastore';
+import { SqlLite } from '../connections/sqlLite';
+import { User, Photo } from '../types/types';
 
 export class SqlDatastore implements Datastore {
   private sqlLite: SqlLite | undefined;
