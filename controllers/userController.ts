@@ -1,7 +1,18 @@
-import { ExpressHandler, SignInRequest, SignInResponse, SignUpRequest } from '../types/api';
+import { Datastore } from '../datastore/datastore';
+import {
+  ExpressHandler,
+  SignInRequest,
+  SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
+} from '../types/api';
+import crypto from 'crypto';
 
-class UserController {
-  constructor() {}
+export class UserController {
+  private datastore: Datastore;
+  constructor(datastore: Datastore) {
+    this.datastore = datastore;
+  }
   public signIn: ExpressHandler<SignInRequest, SignInResponse> = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -9,7 +20,18 @@ class UserController {
     }
     return res.sendStatus(200);
   };
-  public signUp: ExpressHandler<SignUpRequest, SignInResponse> = async (req, res) => {
-    return res.sendStatus(200);
+  public signUp: ExpressHandler<SignUpRequest, SignUpResponse> = async (req, res) => {
+    const { email, firstName, password } = req.body;
+    if (!email || !firstName || !password) {
+      return res.status(400).send({ error: 'Missing Fileds' });
+    }
+    const user = {
+      id: crypto.randomUUID(),
+      email,
+      firstName,
+      password,
+    };
+    await this.datastore.createUser(user);
+    res.status(200).send({ jwt: 'aaaaaaaaaa' });
   };
 }

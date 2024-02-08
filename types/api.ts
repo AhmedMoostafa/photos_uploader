@@ -1,20 +1,31 @@
 import { RequestHandler } from 'express';
-import { User } from './types';
-
-export interface SignInRequest {
+import { Photo, User } from './types';
+//User
+export type SignInRequest = {
   email: string;
   password: string;
-}
-export interface SignInResponse {
+};
+export type SignInResponse = {
   user: Pick<User, 'email' | 'firstName' | 'id'>;
   jwt: string;
-}
-export type SignUpRequest = {
-  user: Pick<User, 'email' | 'firstName' | 'password'>;
 };
+export type SignUpRequest = Pick<User, 'email' | 'firstName' | 'password'>;
 export interface SignUpResponse {
   jwt: string;
 }
+
+//Photo
+export type AllPhotosRequest = {};
+export type AllPhotosResponse = {
+  photos: Photo[];
+};
+
+export type UploadPhotoRequest = {
+  photo: Pick<Photo, 'title' | 'description'>;
+  userEmail: string;
+};
+
+export type UploadPhotoResponse = {};
 
 // Create generic type and append error prop to the Type T
 type WithError<T> = T & { error: string };

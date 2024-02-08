@@ -1,4 +1,4 @@
-import { Datastore } from '..';
+import { Datastore } from '../datastore';
 import { SqlLite } from '../../connections/sqlLite';
 import { User, Photo } from '../../types/types';
 
@@ -9,9 +9,14 @@ export class SqlDatastore implements Datastore {
       this.sqlLite = dbClinet;
     });
   }
-  createUser(user: User): Promise<void> {
-    this.sqlLite;
-    throw new Error('Method not implemented.');
+  async createUser(user: User): Promise<void> {
+    await this.sqlLite?.dbClinet?.run(
+      'INSERT INTO users (id,email,firstname,password) VALUES (?,?,?,?)',
+      user.id,
+      user.email,
+      user.firstName,
+      user.password
+    );
   }
   getUserById(id: string): Promise<User | undefined> {
     throw new Error('Method not implemented.');
@@ -19,8 +24,12 @@ export class SqlDatastore implements Datastore {
   getUserByEmail(email: string): Promise<User | undefined> {
     throw new Error('Method not implemented.');
   }
-  listPhotos(): Promise<Photo[]> {
-    return Promise.resolve([]);
+  async listPhotos(): Promise<Photo[]> {
+    const photos = await this.sqlLite?.dbClinet?.all<Photo[]>('SELECT * FROM photos');
+    if (!photos) {
+      return [];
+    }
+    return photos;
   }
   getPhotoById(id: string): Promise<Photo> {
     throw new Error('Method not implemented.');
