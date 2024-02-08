@@ -7,6 +7,7 @@ import {
   UpdatePhotoRequest,
   UpdatePhotoResponse,
   ExpressHandlerWithParams,
+  ExpressHandlerWithQuery,
 } from '../types/api';
 import { Datastore } from '../datastore/datastore';
 import { ERRORS } from '../utils/errorMessages';
@@ -17,8 +18,19 @@ export class PhotoController {
   constructor(datastore: Datastore) {
     this.datastore = datastore;
   }
-  public allPhotos: ExpressHandler<AllPhotosRequest, AllPhotosResponse> = async (req, res) => {
-    const allPhotos = await this.datastore.listPhotos();
+  public allPhotos: ExpressHandlerWithQuery<
+    { skip: number; size: number },
+    AllPhotosRequest,
+    AllPhotosResponse
+  > = async (req, res) => {
+    const { skip, size } = req.query;
+    let allPhotos;
+    if (!skip || !size) {
+      allPhotos = await this.datastore.listPhotos();
+    } else {
+      allPhotos = await this.datastore.listPhotos(size, skip);
+    }
+
     return res.send({
       photos: allPhotos,
     });

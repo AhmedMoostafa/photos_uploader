@@ -24,8 +24,18 @@ export class SqlDatastore implements Datastore {
   async getUserByEmail(email: string): Promise<User | undefined> {
     return await this.sqlLite?.dbClinet?.get<User>(`SELECT * FROM users WHERE email = ?`, email);
   }
-  async listPhotos(): Promise<Photo[]> {
-    const photos = await this.sqlLite?.dbClinet?.all<Photo[]>('SELECT * FROM photos');
+
+  async listPhotos(size?: number, offset?: number): Promise<Photo[]> {
+    let photos;
+    if (size !== undefined || offset !== undefined) {
+      photos = await this.sqlLite?.dbClinet?.all<Photo[]>(
+        'SELECT * FROM photos LIMIT ? OFFSET ?;',
+        size,
+        offset
+      );
+    } else {
+      photos = await this.sqlLite?.dbClinet?.all<Photo[]>('SELECT * FROM photos');
+    }
     if (!photos) {
       return [];
     }

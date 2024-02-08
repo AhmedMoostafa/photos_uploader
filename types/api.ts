@@ -49,3 +49,9 @@ export type ExpressHandlerWithParams<Params, Req, Res> = RequestHandler<
   Partial<Req>,
   any
 >;
+export type ExpressHandlerWithQuery<QueryItems, Req, Res> = RequestHandler<
+  any,
+  Partial<WithError<Res>>,
+  Partial<Req>,
+  Partial<QueryItems>
+>;
