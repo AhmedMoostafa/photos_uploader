@@ -23,12 +23,6 @@ export const authMiddleware: ExpressHandler<any, any> = async (req, res, next) =
     return res.status(401).send({ error: ERRORS.USER_NOT_FOUND });
   }
   res.locals.userId = user.id;
-  return next();
-};
 
-export const enforceJwtMiddleware: ExpressHandler<any, any> = async (_, res, next) => {
-  if (!res.locals.userId) {
-    return res.sendStatus(401);
-  }
   return next();
 };

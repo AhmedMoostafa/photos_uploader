@@ -20,12 +20,14 @@ export type AllPhotosResponse = {
   photos: Photo[];
 };
 
-export type UploadPhotoRequest = {
-  photo: Pick<Photo, 'title' | 'description'>;
-  userEmail: string;
-};
+export type UploadPhotoRequest = Pick<Photo, 'title' | 'description'>;
 
-export type UploadPhotoResponse = {};
+export type UploadPhotoResponse = { photo: Photo };
+
+export type UpdatePhotoRequest = Pick<Photo, 'title' | 'description'>;
+export type UpdatePhotoResponse = {
+  photo: Photo;
+};
 
 export interface jwtObject {
   userId: string;
@@ -35,7 +37,7 @@ export interface jwtObject {
 type WithError<T> = T & { error: string };
 
 export type ExpressHandler<Req, Res> = RequestHandler<
-  string,
+  any,
   Partial<WithError<Res>>,
   Partial<Req>,
   any

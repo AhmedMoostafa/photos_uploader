@@ -31,13 +31,26 @@ export class SqlDatastore implements Datastore {
     }
     return photos;
   }
-  getPhotoById(id: string): Promise<Photo> {
-    throw new Error('Method not implemented.');
+  async getPhotoById(id: string): Promise<Photo | undefined> {
+    return await this.sqlLite?.dbClinet?.get<Photo>(`SELECT * FROM photos WHERE id = ?`, id);
   }
-  createPhoto(photo: Photo): Promise<void> {
-    throw new Error('Method not implemented.');
+  async createPhoto(photo: Photo): Promise<void> {
+    await this.sqlLite?.dbClinet?.run(
+      'INSERT INTO photos (id,title,description,path,userId,createdAt) VALUES (?,?,?,?,?,?)',
+      photo.id,
+      photo.title,
+      photo.description,
+      photo.path,
+      photo.userId,
+      photo.createdAt
+    );
   }
-  updatePhoto(photo: Photo): Promise<Photo> {
-    throw new Error('Method not implemented.');
+  async updatePhoto(photo: Photo): Promise<void> {
+    await this.sqlLite?.dbClinet?.run(
+      ' UPDATE photos SET description = ? , title= ? WHERE id = ?',
+      photo.description,
+      photo.title,
+      photo.id
+    );
   }
 }

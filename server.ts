@@ -7,6 +7,8 @@ import photosRouter from './routers/photos';
 import { errorHandler } from './middlewares/errorMiddleware.';
 import dorenv from 'dotenv';
 import { authMiddleware } from './middlewares/authMiddleware';
+// const upload = multer({ dest: 'uploads/' });
+
 const main = async () => {
   dorenv.config();
   const app = express();
@@ -14,7 +16,7 @@ const main = async () => {
 
   app.use('/user', userRouter);
 
-  app.use('/photos', photosRouter);
+  app.use('/photos', asyncHandler(authMiddleware), photosRouter);
 
   app.use(errorHandler);
 
