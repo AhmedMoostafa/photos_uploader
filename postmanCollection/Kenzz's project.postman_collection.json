@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "b6f83242-9db9-4f91-b3f2-6bc32ce0a7d5",
+		"name": "Kenzz's project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12494190",
+		"_collection_link": "https://universal-trinity-667977.postman.co/workspace/valeo~1fcb717c-2f7b-4a12-8d1a-38e54517898f/collection/12494190-b6f83242-9db9-4f91-b3f2-6bc32ce0a7d5?action=share&source=collection_link&creator=12494190"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"ACCESS_TOKEN\", pm.response.json().jwt)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"ahmed@gmail.com\",\r\n    \"firstName\":\"ahmed\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/user/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"ACCESS_TOKEN\", pm.response.json().jwt)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"ahmed@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/user/login"
+			},
+			"response": []
+		},
+		{
+			"name": "upload photo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{ACCESS_TOKEN}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/ahmed/OneDrive/Pictures/Screenshots/Screenshot 2023-08-10 165725.png"
+						},
+						{
+							"key": "description",
+							"value": "description 5",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "title 5",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{URL}}/photos/upload/"
+			},
+			"response": []
+		},
+		{
+			"name": "photos list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{ACCESS_TOKEN}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/photos/list?size=10&skip=0",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"photos",
+						"list"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "skip",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update photo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{ACCESS_TOKEN}}"
+					}
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\":\"new description\",\r\n    \"title\":\"new title\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/photos/update/281d9061-65e8-4350-a064-cb53c7212061"
+			},
+			"response": []
+		}
+	]
+}
