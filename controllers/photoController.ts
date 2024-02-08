@@ -14,10 +14,12 @@ import { ERRORS } from '../utils/errorMessages';
 import { Photo } from '../types/types';
 import crypto from 'crypto';
 export class PhotoController {
-  private datastore: Datastore;
+  private _datastore: Datastore;
+
   constructor(datastore: Datastore) {
-    this.datastore = datastore;
+    this._datastore = datastore;
   }
+
   public allPhotos: ExpressHandlerWithQuery<
     { skip: number; size: number },
     AllPhotosRequest,
@@ -26,11 +28,10 @@ export class PhotoController {
     const { skip, size } = req.query;
     let allPhotos;
     if (!skip || !size) {
-      allPhotos = await this.datastore.listPhotos();
+      allPhotos = await this._datastore.listPhotos();
     } else {
-      allPhotos = await this.datastore.listPhotos(size, skip);
+      allPhotos = await this._datastore.listPhotos(size, skip);
     }
-
     return res.send({
       photos: allPhotos,
     });
@@ -50,7 +51,7 @@ export class PhotoController {
       path: req.file?.path,
       userId: res.locals.userId,
     };
-    await this.datastore.createPhoto(photo);
+    await this._datastore.createPhoto(photo);
     res.status(201).send({ photo });
   };
 
@@ -62,23 +63,26 @@ export class PhotoController {
     if (!req.params.id) {
       return res.status(400).send({ error: ERRORS.MISSING_PHOTO_ID });
     }
-    req.body.description;
-    let photo = await this.datastore.getPhotoById(req.params.id);
+
+    let photo = await this._datastore.getPhotoById(req.params.id);
     if (!photo) {
       return res.status(400).send({ error: ERRORS.BAD_PHOTO_ID });
     }
+
     if (photo.userId !== res.locals.userId) {
       return res.status(401).send({ error: ERRORS.USER_UNAUTHORIZED });
     }
+
     if (!req.body.description || !req.body.title) {
       return res.status(400).send({ error: ERRORS.PHOTO_REQUIRED_FIELDS });
     }
+
     const updatedPhoto: Photo = {
       ...photo,
       description: req.body.description,
       title: req.body.title,
     };
-    await this.datastore.updatePhoto(updatedPhoto);
+    await this._datastore.updatePhoto(updatedPhoto);
 
     return res.status(201).send({ photo: updatedPhoto });
   };

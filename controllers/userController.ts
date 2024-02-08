@@ -8,20 +8,21 @@ import {
 } from '../types/api';
 import crypto from 'crypto';
 import { signJwt } from '../utils/auth';
+import { ERRORS } from '../utils/errorMessages';
 
 export class UserController {
-  private datastore: Datastore;
+  private _datastore: Datastore;
   constructor(datastore: Datastore) {
-    this.datastore = datastore;
+    this._datastore = datastore;
   }
   public signIn: ExpressHandler<SignInRequest, SignInResponse> = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.sendStatus(400);
+      return res.status(400).send({ error: ERRORS.USER_REQUIRED_FIELDS });
     }
-    const user = await this.datastore.getUserByEmail(email);
+    const user = await this._datastore.getUserByEmail(email);
     if (user?.password !== password) {
-      return res.sendStatus(403);
+      return res.status(403).send({ error: ERRORS.BAD_EMAIL_OR_PASWWORD });
     }
     const jwt = signJwt({ userId: user.id });
 
@@ -37,6 +38,9 @@ export class UserController {
     if (!email || !firstName || !password) {
       return res.status(400).send({ error: 'Missing Fileds' });
     }
+    if (await this._datastore.getUserByEmail(email)) {
+      return res.status(403).send({ error: ERRORS.DUPLICATE_EMAIL });
+    }
     const user = {
       id: crypto.randomUUID(),
       email,
@@ -44,7 +48,7 @@ export class UserController {
       password,
     };
     const jwt = signJwt({ userId: user.id });
-    await this.datastore.createUser(user);
+    await this._datastore.createUser(user);
     res.status(200).send({ jwt });
   };
 }
