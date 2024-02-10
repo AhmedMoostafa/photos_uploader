@@ -17,11 +17,14 @@ export class UserController {
   }
   public signIn: ExpressHandler<SignInRequest, SignInResponse> = async (req, res) => {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).send({ error: ERRORS.USER_REQUIRED_FIELDS });
     }
+    const passwordHash = this.hashPassword(password);
+
     const user = await this._datastore.getUserByEmail(email);
-    if (user?.password !== password) {
+    if (user?.password !== passwordHash) {
       return res.status(403).send({ error: ERRORS.BAD_EMAIL_OR_PASWWORD });
     }
     const jwt = signJwt({ userId: user.id });
@@ -41,14 +44,23 @@ export class UserController {
     if (await this._datastore.getUserByEmail(email)) {
       return res.status(403).send({ error: ERRORS.DUPLICATE_EMAIL });
     }
+    const passwordHash = this.hashPassword(password);
     const user = {
       id: crypto.randomUUID(),
       email,
       firstName,
-      password,
+      password: passwordHash,
     };
     const jwt = signJwt({ userId: user.id });
     await this._datastore.createUser(user);
     res.status(200).send({ jwt });
   };
+  private hashPassword(password: string): string {
+    if (process.env.PASSWORD_SALT) {
+      return crypto
+        .pbkdf2Sync(password, process.env.PASSWORD_SALT, 42, 64, 'sha512')
+        .toString('hex');
+    }
+    process.exit(1);
+  }
 }
