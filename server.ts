@@ -7,11 +7,13 @@ import { errorHandler } from './middlewares/errorMiddleware.';
 import dorenv from 'dotenv';
 import { authMiddleware } from './middlewares/authMiddleware';
 import { loggerMiddleware } from './middlewares/logger';
-
+import path from 'path';
 const main = async () => {
   dorenv.config();
   const app = express();
   app.use(express.json());
+  app.use('/images', express.static(path.join(__dirname, 'images')));
+
   app.use(loggerMiddleware);
 
   app.use('/user', userRouter);
