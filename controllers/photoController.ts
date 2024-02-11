@@ -86,4 +86,23 @@ export class PhotoController {
 
     return res.status(201).send({ photo: updatedPhoto });
   };
+  public getPhotoById: ExpressHandlerWithParams<
+    { id: string },
+    UpdatePhotoRequest,
+    UpdatePhotoResponse
+  > = async (req, res) => {
+    if (!req.params.id) {
+      return res.status(400).send({ error: ERRORS.MISSING_PHOTO_ID });
+    }
+
+    let photo = await this._datastore.getPhotoById(req.params.id);
+    if (!photo) {
+      return res.status(400).send({ error: ERRORS.BAD_PHOTO_ID });
+    }
+
+    const selectedPhoto: Photo = photo;
+    await this._datastore.updatePhoto(selectedPhoto);
+
+    return res.status(201).send({ photo: selectedPhoto });
+  };
 }

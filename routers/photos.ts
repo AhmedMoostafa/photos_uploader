@@ -8,6 +8,7 @@ import { multerImageMiddleware } from '../middlewares/multerImageMiddleware';
 const router = express.Router();
 const photoController = new PhotoController(db);
 router.get('/list', asyncHandler(photoController.allPhotos));
+router.get('/photo/:id', asyncHandler(photoController.getPhotoById));
 router.patch('/update/:id', asyncHandler(photoController.updatePhoto));
 router.post(
   '/upload',
