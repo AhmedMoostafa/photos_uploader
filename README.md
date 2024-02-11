@@ -10,7 +10,7 @@ Mopile Application To Upload And Borwse Images
 - Signup
 - Login
 - Upload Photo
-- Upadte Photo
+- Upadate Photo
 - Browse Photos
 - Open Photo Details
 
