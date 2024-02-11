@@ -19,6 +19,9 @@ export const login = async (email: string, password: string) => {
 
     return response.data;
   } catch (error: any) {
+    if (!error.response) {
+      return { error: "Internal server Error" };
+    }
     return error.response.data;
   } finally {
     // setIsLoading(false);
@@ -49,6 +52,9 @@ export const signUp = async (
 
     return response.data;
   } catch (error: any) {
+    if (!error.response) {
+      return { error: "Internal server Error" };
+    }
     return error.response.data;
   } finally {
     // setIsLoading(false);

@@ -69,7 +69,11 @@ const Login = () => {
             <TouchableOpacity
               style={styles.searchBtn}
               onPress={async () => {
-                await onLogin();
+                if (password && email) {
+                  await onLogin();
+                } else {
+                  Alert.alert("Error", "Missing Fields");
+                }
               }}
             >
               <Text

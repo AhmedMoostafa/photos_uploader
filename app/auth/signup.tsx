@@ -25,7 +25,7 @@ const Signup = () => {
 
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
-  const onLogin = async () => {
+  const onSignup = async () => {
     let res = await signUp(firstName, email, password);
     if (res.error) {
       Alert.alert("Error", res.error);
@@ -87,7 +87,12 @@ const Signup = () => {
             <TouchableOpacity
               style={styles.searchBtn}
               onPress={async () => {
-                await onLogin();
+                console.log(password, firstName, email);
+                if (password && firstName && email) {
+                  await onSignup();
+                } else {
+                  Alert.alert("Error", "Missing Fields");
+                }
               }}
             >
               <Text
