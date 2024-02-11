@@ -25,7 +25,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"ahmed@gmail.com\",\r\n    \"firstName\":\"ahmed\",\r\n    \"password\":\"123\"\r\n}",
+					"raw": "{\r\n    \"email\": \"ahmedMostafa12@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"firstName\": \"ahmed\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,7 +54,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"ahmed@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"raw": "{\r\n    \"email\":\"ahmedMostafa@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -146,6 +146,21 @@
 			"response": []
 		},
 		{
+			"name": "photos by id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{ACCESS_TOKEN}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{URL}}/photos/photo/78f237ca-936f-405d-b48d-191da6b6c45f"
+			},
+			"response": []
+		},
+		{
 			"name": "update photo",
 			"request": {
 				"auth": {
@@ -165,7 +180,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/photos/update/281d9061-65e8-4350-a064-cb53c7212061"
+				"url": "{{URL}}/photos/update/5a28ccf7-c607-49f0-8347-323a5169d968"
 			},
 			"response": []
 		}
