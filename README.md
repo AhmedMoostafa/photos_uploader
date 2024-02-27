@@ -1,4 +1,4 @@
-# kenzz_photos_uploader
+# photos_uploader
 
 Mopile Application To Upload And Borwse Images
 ## Screenshots
